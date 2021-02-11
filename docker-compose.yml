@@ -1,6 +1,20 @@
 version: "2.1"
 
 services:
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    volumes:
+      - ${PORTAINER_DOCKER_SOCKET}:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - ${PORTAINER_PORT_UI}:9000
+      - ${PORTAINER_PORT_SSH}:8000
+    expose:
+      - ${PORTAINER_PORT_UI}
+      - ${PORTAINER_PORT_SSH}
+    restart: always
+
   ombi:
     image: linuxserver/ombi
     container_name: htpc-ombi
@@ -161,47 +175,5 @@ services:
     restart: always
 
 
-# volumes:
-# - /etc/localtime:/etc/localtime:ro
-
-# networks:
-#   # htpc-private:
-#   htpc-public:
-#     external:
-#       name: VLAN1-pihole
-
-
-
-# networks:
-#   htpc-private:
-#   htpc-public:
-#     driver: macvlan
-#     driver_opts:
-#       parent: VLAN1-pihole
-#     ipam:
-#       config:
-#         - subnet: 100.98.26.0/24
-
-
-# docker network create -d macvlan \
-#   --subnet=192.168.1.0/24 \
-#   --gateway=192.168.1.1 \
-#   --ip-range=192.168.1.4/32 \
-#   -o parent=ovs_eth0 VLAN1-pihole
-
-
-
-# services:
-# ombi:
-#   image: linuxserver/ombi
-#   container_name: htpc-ombi
-#   environment:
-#     - PUID=1026
-#     - PGID=100
-#     - TZ=Europe/Brussels
-#     # - BASE_URL=/ombi
-#   volumes:
-#     - /volume1/Personal/sync/dropbox/htpc/config/ombi:/config
-#   ports:
-#     - 3579:3579
-#   restart: unless-stopped
+volumes:
+  portainer_data:
