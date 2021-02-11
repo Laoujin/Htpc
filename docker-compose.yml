@@ -1,6 +1,17 @@
 version: "2.1"
 
 services:
+  youtube:
+    image: kmb32123/youtube-dl-server
+    container_name: youtube-dl
+    volumes:
+      - ${YOUTUBE_PATH}:/youtube-dl
+    ports:
+      - ${YOUTUBE_PORT}:8080
+    expose:
+      - ${YOUTUBE_PORT}
+    restart: always
+
   portainer:
     image: portainer/portainer-ce
     container_name: portainer
@@ -148,6 +159,7 @@ services:
       - ${CONFIG_PATH}/jellyfin:/config
       - ${SERIES_PATH}:/data/tvshows
       - ${MOVIES_PATH}:/data/movies
+      - ${YOUTUBE_PATH}:/data/youtube
     ports:
       - ${JELLYFIN_PORT}:8096
       - ${JELLYFIN_PORT_SSH}:8090
