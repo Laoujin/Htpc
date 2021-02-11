@@ -34,7 +34,7 @@ services:
       - ${CONFIG_PATH}/sonarr:/config
       - ${CONFIG_PATH}/sonarr-rtc:/dev/rtc:ro
       - ${SERIES_PATH}:/tv
-      - ${DOWNLOAD_PATH}/complete:/downloads
+      - ${DOWNLOAD_PATH}:/downloads
     ports:
       - ${SONARR_PORT}:8989
     expose:
@@ -53,7 +53,7 @@ services:
     volumes:
       - ${CONFIG_PATH}/radarr:/config
       - ${MOVIES_PATH}:/movies
-      - ${DOWNLOAD_PATH}/complete:/downloads
+      - ${DOWNLOAD_PATH}:/downloads
     ports:
       - ${RADARR_PORT}:7878
     expose:
@@ -136,7 +136,7 @@ services:
       - ${MOVIES_PATH}:/data/movies
     ports:
       - ${JELLYFIN_PORT}:8096
-      - ${JELLYFIN_PORT_SSH}:8920
+      - ${JELLYFIN_PORT_SSH}:8090
     expose:
       - ${JELLYFIN_PORT}
       - ${JELLYFIN_PORT_SSH}
