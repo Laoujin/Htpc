@@ -2,7 +2,8 @@ Media
 =====
 
 ```ps1
-docker-compose up
+cp .env-example .env
+docker-compose -d up
 docker-compose down
 ```
 

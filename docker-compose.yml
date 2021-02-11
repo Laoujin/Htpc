@@ -1,11 +1,5 @@
 version: "2.1"
 
-# configuration:
-# /volume1/Personal/sync/dropbox/htpc
-
-
-# /volume1/Personal/sync/dropbox/Personal/Programming/UnixCode/projects/Htpc
-
 services:
   ombi:
     image: linuxserver/ombi
