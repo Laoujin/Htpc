@@ -1,0 +1,213 @@
+version: "2.1"
+
+# configuration:
+# /volume1/Personal/sync/dropbox/htpc
+
+
+# /volume1/Personal/sync/dropbox/Personal/Programming/UnixCode/projects/Htpc
+
+services:
+  ombi:
+    image: linuxserver/ombi
+    container_name: htpc-ombi
+    # hostname: ombi
+    # domainname: ombi.htpc
+    # mac_address: 00:00:00:41:16:01
+    # networks:
+    #   - htpc-public
+    network_mode: host
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      # - BASE_URL=/ombi
+    volumes:
+      - ${CONFIG_PATH}/ombi:/config
+    ports:
+      - ${OMBI_PORT}:3579
+    expose:
+      - ${OMBI_PORT}
+    restart: always
+
+  sonarr:
+    image: linuxserver/sonarr
+    container_name: htpc-sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/sonarr:/config
+      - ${CONFIG_PATH}/sonarr-rtc:/dev/rtc:ro
+      - ${SERIES_PATH}:/tv
+      - ${DOWNLOAD_PATH}/complete:/downloads
+    ports:
+      - ${SONARR_PORT}:8989
+    expose:
+      - ${SONARR_PORT}
+    restart: always
+
+
+
+  radarr:
+    image: linuxserver/radarr
+    container_name: htpc-radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/radarr:/config
+      - ${MOVIES_PATH}:/movies
+      - ${DOWNLOAD_PATH}/complete:/downloads
+    ports:
+      - ${RADARR_PORT}:7878
+    expose:
+      - ${RADARR_PORT}
+    restart: always
+
+
+
+  transmission:
+    image: linuxserver/transmission
+    container_name: htpc-transmission
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - TRANSMISSION_WEB_HOME=/transmission-web-control/
+      - USER=${TRANSMISSION_USER}
+      - PASS=${TRANSMISSION_PASS}
+    volumes:
+      - ${CONFIG_PATH}/transmission:/config
+      - ${DOWNLOAD_PATH}:/downloads
+      - ${BLACKHOLE_PATH}:/watch
+    ports:
+      - ${TRANSMISSION_PORT}:9091
+      - 51413:51413
+      - 51413:51413/udp
+    expose:
+      - ${TRANSMISSION_PORT}
+      - 51413
+      - 51413/udp
+    restart: always
+
+
+  jackett:
+    image: linuxserver/jackett
+    container_name: htpc-jackett
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - AUTO_UPDATE=true
+    volumes:
+      - ${CONFIG_PATH}/jackett:/config
+      - ${BLACKHOLE_PATH}:/downloads
+    ports:
+      - ${JACKETT_PORT}:9117
+    expose:
+      - ${JACKETT_PORT}
+    restart: always
+
+
+  bazarr:
+    image: linuxserver/bazarr
+    container_name: htpc-bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/bazarr:/config
+      - ${SERIES_PATH}:/tv
+      - ${MOVIES_PATH}:/movies
+    ports:
+      - ${BAZARR_PORT}:6767
+    expose:
+      - ${BAZARR_PORT}
+    restart: always
+
+
+  jellyfin:
+    image: linuxserver/jellyfin
+    container_name: htpc-jellyfin
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/jellyfin:/config
+      - ${SERIES_PATH}:/data/tvshows
+      - ${MOVIES_PATH}:/data/movies
+    ports:
+      - ${JELLYFIN_PORT}:8096
+      - ${JELLYFIN_PORT_SSH}:8920
+    expose:
+      - ${JELLYFIN_PORT}
+      - ${JELLYFIN_PORT_SSH}
+    restart: always
+
+
+  heimdall:
+    image: linuxserver/heimdall
+    container_name: htpc-heimdall
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/heimdall:/config
+    ports:
+      - ${HEIMDALL_PORT}:80
+      - ${HEIMDALL_PORT_SSH}:443
+    expose:
+      - ${HEIMDALL_PORT}
+      - ${HEIMDALL_PORT_SSH}
+    restart: always
+
+
+# volumes:
+# - /etc/localtime:/etc/localtime:ro
+
+# networks:
+#   # htpc-private:
+#   htpc-public:
+#     external:
+#       name: VLAN1-pihole
+
+
+
+# networks:
+#   htpc-private:
+#   htpc-public:
+#     driver: macvlan
+#     driver_opts:
+#       parent: VLAN1-pihole
+#     ipam:
+#       config:
+#         - subnet: 100.98.26.0/24
+
+
+# docker network create -d macvlan \
+#   --subnet=192.168.1.0/24 \
+#   --gateway=192.168.1.1 \
+#   --ip-range=192.168.1.4/32 \
+#   -o parent=ovs_eth0 VLAN1-pihole
+
+
+
+# services:
+# ombi:
+#   image: linuxserver/ombi
+#   container_name: htpc-ombi
+#   environment:
+#     - PUID=1026
+#     - PGID=100
+#     - TZ=Europe/Brussels
+#     # - BASE_URL=/ombi
+#   volumes:
+#     - /volume1/Personal/sync/dropbox/htpc/config/ombi:/config
+#   ports:
+#     - 3579:3579
+#   restart: unless-stopped
