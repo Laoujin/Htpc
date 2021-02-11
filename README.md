@@ -1,6 +1,14 @@
 Media
 =====
 
+```ps1
+docker-compose up
+docker-compose down
+```
+
+
+
+
 configuration:
 - config & torrent-blackhole --> in dropbox/working/htpc --> magnets don't work for Transmission blackhole
 - downloads in m:\downloads
