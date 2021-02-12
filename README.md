@@ -1,3 +1,13 @@
+Docker
+=====
+To be able to run Docker without sudo follow the 
+Required Steps:
+- create the group "docker" from the ui or cli (sudo synogroup --add docker)
+- make it the group of the docker.sock: sudo chown root:docker /var/run/docker.sock
+- assign the user to the docker group in the ui or cli (sudo synogroup --member docker {username})
+- login into ssh as {username} and try (if you were already logged in before you created the group, logout and relogin)
+
+
 Media
 =====
 
