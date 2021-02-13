@@ -16,7 +16,7 @@ services:
       - ${CONFIG_PATH}/sonarr:/config
       - ${CONFIG_PATH}/sonarr-rtc:/dev/rtc:ro
       - ${SERIES_PATH}:/tv
-      - ${DOWNLOAD_PATH}:/downloads
+      - ${DOWNLOAD_PATH}:/downloads/complete
     ports:
       - ${SONARR_PORT}:8989
     expose:
@@ -39,7 +39,7 @@ services:
     volumes:
       - ${CONFIG_PATH}/radarr:/config
       - ${MOVIES_PATH}:/movies
-      - ${DOWNLOAD_PATH}:/downloads
+      - ${DOWNLOAD_PATH}:/downloads/complete
     ports:
       - ${RADARR_PORT}:7878
     expose:
@@ -128,29 +128,29 @@ services:
   ############
   # JELLYFIN #
   ############
-  jellyfin:
-    image: linuxserver/jellyfin
-    container_name: htpc-jellyfin
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${CONFIG_PATH}/jellyfin:/config
-      - ${SERIES_PATH}:/data/tvshows
-      - ${MOVIES_PATH}:/data/movies
-      - ${YOUTUBE_PATH}:/data/youtube
-    ports:
-      - ${JELLYFIN_PORT}:8096
-      - ${JELLYFIN_PORT_SSH}:8090
-    expose:
-      - ${JELLYFIN_PORT}
-      - ${JELLYFIN_PORT_SSH}
-    devices:
-      - /dev/dri:/dev/dri
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
+#  jellyfin:
+#    image: linuxserver/jellyfin
+#    container_name: htpc-jellyfin
+#    environment:
+#      - PUID=${PUID}
+#      - PGID=${PGID}
+#      - TZ=${TZ}
+#    volumes:
+#      - ${CONFIG_PATH}/jellyfin:/config
+#      - ${SERIES_PATH}:/data/tvshows
+#      - ${MOVIES_PATH}:/data/movies
+#      - ${YOUTUBE_PATH}:/data/youtube
+#    ports:
+#      - ${JELLYFIN_PORT}:8096
+#      - ${JELLYFIN_PORT_SSH}:8090
+#    expose:
+#      - ${JELLYFIN_PORT}
+#      - ${JELLYFIN_PORT_SSH}
+#    devices:
+#      - /dev/dri:/dev/dri
+#    restart: ${RESTART_POLICY}
+#    labels:
+#      - 'com.centurylinklabs.watchtower.enable=true'
 
   ##############
   # YOUTUBE-DL #
@@ -173,7 +173,7 @@ services:
   # READARR #
   ###########
   readarr:
-    container_name: readarr
+    container_name: htpc-readarr
     image: hotio/readarr:nightly
     restart: ${RESTART_POLICY}
     ports:
