@@ -15,7 +15,7 @@ services:
     volumes:
       - ${CONFIG_PATH}/sonarr:/config
       - ${CONFIG_PATH}/sonarr-rtc:/dev/rtc:ro
-      - ${SERIES_PATH}:/tv
+      - ${SERIES_PATH}:/tvshows
       - ${DOWNLOAD_PATH}:/downloads/complete
     ports:
       - ${SONARR_PORT}:8989
@@ -114,7 +114,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/bazarr:/config
-      - ${SERIES_PATH}:/tv
+      - ${SERIES_PATH}:/tvshows
       - ${MOVIES_PATH}:/movies
     ports:
       - ${BAZARR_PORT}:6767
@@ -128,29 +128,30 @@ services:
   ############
   # JELLYFIN #
   ############
-#  jellyfin:
-#    image: linuxserver/jellyfin
-#    container_name: htpc-jellyfin
-#    environment:
-#      - PUID=${PUID}
-#      - PGID=${PGID}
-#      - TZ=${TZ}
-#    volumes:
-#      - ${CONFIG_PATH}/jellyfin:/config
-#      - ${SERIES_PATH}:/data/tvshows
-#      - ${MOVIES_PATH}:/data/movies
-#      - ${YOUTUBE_PATH}:/data/youtube
-#    ports:
-#      - ${JELLYFIN_PORT}:8096
-#      - ${JELLYFIN_PORT_SSH}:8090
-#    expose:
-#      - ${JELLYFIN_PORT}
-#      - ${JELLYFIN_PORT_SSH}
-#    devices:
-#      - /dev/dri:/dev/dri
-#    restart: ${RESTART_POLICY}
-#    labels:
-#      - 'com.centurylinklabs.watchtower.enable=true'
+  jellyfin:
+    image: linuxserver/jellyfin
+    container_name: htpc-jellyfin
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/jellyfin:/config
+      - ${SERIES_PATH}:/data/tvshows
+      - ${MOVIES_PATH}:/data/movies
+      - ${YOUTUBE_PATH}:/data/youtube
+    ports:
+      - ${JELLYFIN_PORT}:8096
+      - ${JELLYFIN_PORT_SSH}:8090
+    expose:
+      - ${JELLYFIN_PORT}
+      - ${JELLYFIN_PORT_SSH}
+    devices:
+      - /dev/dri:/dev/dri
+    restart: ${RESTART_POLICY}
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
 
   ##############
   # YOUTUBE-DL #
