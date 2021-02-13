@@ -14,8 +14,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/sonarr:/config
-      - ${CONFIG_PATH}/sonarr-rtc:/dev/rtc:ro
-      - ${SERIES_PATH}:/tvshows
+      - ${SERIES_PATH}:/tv
       - ${DOWNLOAD_PATH}:/downloads/complete
     ports:
       - ${SONARR_PORT}:8989
@@ -24,7 +23,6 @@ services:
     restart: ${RESTART_POLICY}
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
-
 
   ##########
   # RADARR #
@@ -114,7 +112,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/bazarr:/config
-      - ${SERIES_PATH}:/tvshows
+      - ${SERIES_PATH}:/tv
       - ${MOVIES_PATH}:/movies
     ports:
       - ${BAZARR_PORT}:6767
