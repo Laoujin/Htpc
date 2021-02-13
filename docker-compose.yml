@@ -1,6 +1,7 @@
 version: "2.1"
 
 services:
+
   youtube:
     image: kmb32123/youtube-dl-server
     container_name: youtube-dl
@@ -12,6 +13,9 @@ services:
       - ${YOUTUBE_PORT}
     restart: always
 
+# PORTAINER
+#----------
+
   portainer:
     image: portainer/portainer-ce
     container_name: portainer
@@ -20,11 +24,14 @@ services:
       - portainer_data:/data
     ports:
       - ${PORTAINER_PORT_UI}:9000
-      - ${PORTAINER_PORT_SSH}:8000
+      - ${PORTAINER_PORT_SSL}:8000
     expose:
       - ${PORTAINER_PORT_UI}
-      - ${PORTAINER_PORT_SSH}
+      - ${PORTAINER_PORT_SSL}
     restart: always
+
+# OMBI
+#-----
 
   ombi:
     image: linuxserver/ombi
@@ -48,6 +55,9 @@ services:
       - ${OMBI_PORT}
     restart: always
 
+# SONARR
+#-------
+
   sonarr:
     image: linuxserver/sonarr
     container_name: htpc-sonarr
@@ -58,7 +68,7 @@ services:
     volumes:
       - ${CONFIG_PATH}/sonarr:/config
       - ${CONFIG_PATH}/sonarr-rtc:/dev/rtc:ro
-      - ${SERIES_PATH}:/tv
+      - ${SERIES_PATH}:/tvshows
       - ${DOWNLOAD_PATH}:/downloads
     ports:
       - ${SONARR_PORT}:8989
@@ -66,7 +76,8 @@ services:
       - ${SONARR_PORT}
     restart: always
 
-
+# RADARR
+#--------
 
   radarr:
     image: linuxserver/radarr
@@ -85,7 +96,8 @@ services:
       - ${RADARR_PORT}
     restart: always
 
-
+#TRANSMISSION
+#------------
 
   transmission:
     image: linuxserver/transmission
@@ -139,7 +151,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/bazarr:/config
-      - ${SERIES_PATH}:/tv
+      - ${SERIES_PATH}:/tvshows
       - ${MOVIES_PATH}:/movies
     ports:
       - ${BAZARR_PORT}:6767
@@ -157,15 +169,12 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/jellyfin:/config
-      - ${SERIES_PATH}:/data/tvshows
-      - ${MOVIES_PATH}:/data/movies
-      - ${YOUTUBE_PATH}:/data/youtube
-    ports:
-      - ${JELLYFIN_PORT}:8096
-      - ${JELLYFIN_PORT_SSH}:8090
+      - ${SERIES_PATH}:/tvshows
+      - ${MOVIES_PATH}:/movies
+      - ${YOUTUBE_PATH}:/youtube
     expose:
       - ${JELLYFIN_PORT}
-      - ${JELLYFIN_PORT_SSH}
+      - ${JELLYFIN_PORT_SSL}
     restart: always
 
 
@@ -180,10 +189,10 @@ services:
       - ${CONFIG_PATH}/heimdall:/config
     ports:
       - ${HEIMDALL_PORT}:80
-      - ${HEIMDALL_PORT_SSH}:443
+      - ${HEIMDALL_PORT_SSL}:443
     expose:
       - ${HEIMDALL_PORT}
-      - ${HEIMDALL_PORT_SSH}
+      - ${HEIMDALL_PORT_SSL}
     restart: always
 
 
