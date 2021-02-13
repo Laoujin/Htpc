@@ -1,0 +1,20 @@
+version: "2.1"
+
+services:
+  traktarr:
+    container_name: traktarr
+    image: eafxx/traktarr
+    volumes:
+      - ./config:/config
+    environment:
+      - PUID=1026
+      - PGID=100        
+      - TZ=Europe/Brussels
+      - DELAY=2.5
+      - SORT=rating
+      - NOSEARCH=yes
+      - NOTIFICATIONS=yes
+      - BLACKLIST=yes
+      - RUNNOW=no
+      - SKIPUPDATE=no
+      - APP_BRANCH=master
