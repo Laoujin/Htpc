@@ -15,7 +15,7 @@ services:
     volumes:
       - ${CONFIG_PATH}/sonarr:/config
       - ${SERIES_PATH}:/tv
-      - ${DOWNLOAD_PATH}:/downloads/complete
+      - ${DOWNLOAD_PATH}/complete:/downloads
     ports:
       - ${SONARR_PORT}:8989
     expose:
@@ -37,7 +37,7 @@ services:
     volumes:
       - ${CONFIG_PATH}/radarr:/config
       - ${MOVIES_PATH}:/movies
-      - ${DOWNLOAD_PATH}:/downloads/complete
+      - ${DOWNLOAD_PATH}/complete:/downloads
     ports:
       - ${RADARR_PORT}:7878
     expose:
