@@ -14,15 +14,16 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/sonarr:/config
-      - ${SERIES_PATH}:/tv
-      - ${DOWNLOAD_PATH}:/downloads
+      - ${SERIES_PATH}/:/tv
+      - ${DOWNLOAD_PATH}/:/downloads
     ports:
       - ${SONARR_PORT}:8989
     expose:
       - ${SONARR_PORT}
     restart: ${RESTART_POLICY}
     labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
+     # - ${UPDATE_ON}
+      - com.centurylinklabs.watchtower.enable=true
 
   ##########
   # RADARR #
@@ -36,16 +37,17 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/radarr:/config
-      - ${MOVIES_PATH}:/movies
-      - ${DOWNLOAD_PATH}:/downloads
+      - ${MOVIES_PATH}/:/movies
+      - ${DOCUS_PATH}/:/docus
+      - ${DOWNLOAD_PATH}/:/downloads
     ports:
       - ${RADARR_PORT}:7878
     expose:
       - ${RADARR_PORT}
     restart: ${RESTART_POLICY}
     labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
+     # - ${UPDATE_ON}
+      - com.centurylinklabs.watchtower.enable=true
 
   ###########
   # JACKETT #
@@ -60,45 +62,15 @@ services:
       # - AUTO_UPDATE=true
     volumes:
       - ${CONFIG_PATH}/jackett:/config
-      - ${BLACKHOLE_PATH}:/downloads
+      - ${BLACKHOLE_PATH}/:/downloads
     ports:
       - ${JACKETT_PORT}:9117
     expose:
       - ${JACKETT_PORT}
     restart: ${RESTART_POLICY}
     labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
-
-  ################
-  # TRANSMISSION #
-  ################
-  transmission:
-    image: linuxserver/transmission
-    container_name: htpc-transmission
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - TRANSMISSION_WEB_HOME=/transmission/
-      - USER=${TRANSMISSION_USER}
-      - PASS=${TRANSMISSION_PASS}
-    volumes:
-      - ${CONFIG_PATH}/transmission:/config
-      - ${DOWNLOAD_PATH}:/downloads
-      - ${BLACKHOLE_PATH}:/watch
-    ports:
-      - ${TRANSMISSION_PORT}:9091
-      - 51413:51413
-      - 51413:51413/udp
-    expose:
-      - ${TRANSMISSION_PORT}
-      - 51413
-      - 51413/udp
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
+     # - ${UPDATE_ON}
+      - com.centurylinklabs.watchtower.enable=true
 
   ##########
   # BAZARR #
@@ -112,16 +84,16 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/bazarr:/config
-      - ${SERIES_PATH}:/tv
-      - ${MOVIES_PATH}:/movies
+      - ${SERIES_PATH}/:/tv
+      - ${MOVIES_PATH}/:/movies
     ports:
       - ${BAZARR_PORT}:6767
     expose:
       - ${BAZARR_PORT}
     restart: ${RESTART_POLICY}
     labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
+     # - ${UPDATE_ON}
+      - com.centurylinklabs.watchtower.enable=true
 
   ##############
   # YOUTUBE-DL #
@@ -130,15 +102,15 @@ services:
     image: kmb32123/youtube-dl-server
     container_name: youtube-dl
     volumes:
-      - ${YOUTUBE_PATH}:/youtube-dl
+      - ${YOUTUBE_PATH}/:/youtube-dl
     ports:
       - ${YOUTUBE_PORT}:8080
     expose:
       - ${YOUTUBE_PORT}
     restart: ${RESTART_POLICY}
     labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
+     # - ${UPDATE_ON}
+      - com.centurylinklabs.watchtower.enable=true
 
   ###########
   # READARR #
@@ -159,6 +131,7 @@ services:
       - ARGS
     volumes:
       - ${CONFIG_PATH}/readarr:/config
-      - ${BOOKS_PATH}:/books
+      - ${BOOKS_PATH}/:/books
     labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
+     # - ${UPDATE_ON}
+      - com.centurylinklabs.watchtower.enable=true
