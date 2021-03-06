@@ -22,8 +22,7 @@ services:
       - ${SONARR_PORT}
     restart: ${RESTART_POLICY}
     labels:
-     # - ${UPDATE_ON}
-      - com.centurylinklabs.watchtower.enable=true
+      - ${UPDATE_ON}
 
   ##########
   # RADARR #
@@ -46,8 +45,7 @@ services:
       - ${RADARR_PORT}
     restart: ${RESTART_POLICY}
     labels:
-     # - ${UPDATE_ON}
-      - com.centurylinklabs.watchtower.enable=true
+      - ${UPDATE_ON}
 
   ###########
   # JACKETT #
@@ -69,8 +67,7 @@ services:
       - ${JACKETT_PORT}
     restart: ${RESTART_POLICY}
     labels:
-     # - ${UPDATE_ON}
-      - com.centurylinklabs.watchtower.enable=true
+      - ${UPDATE_ON}
 
   ##########
   # BAZARR #
@@ -92,8 +89,7 @@ services:
       - ${BAZARR_PORT}
     restart: ${RESTART_POLICY}
     labels:
-     # - ${UPDATE_ON}
-      - com.centurylinklabs.watchtower.enable=true
+      - ${UPDATE_ON}
 
   ##############
   # YOUTUBE-DL #
@@ -109,8 +105,7 @@ services:
       - ${YOUTUBE_PORT}
     restart: ${RESTART_POLICY}
     labels:
-     # - ${UPDATE_ON}
-      - com.centurylinklabs.watchtower.enable=true
+      - ${UPDATE_ON}
 
   ###########
   # READARR #
@@ -133,5 +128,4 @@ services:
       - ${CONFIG_PATH}/readarr:/config
       - ${BOOKS_PATH}/:/books
     labels:
-     # - ${UPDATE_ON}
-      - com.centurylinklabs.watchtower.enable=true
+      - ${UPDATE_ON}
