@@ -57,7 +57,6 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      # - AUTO_UPDATE=true
     volumes:
       - ${CONFIG_PATH}/jackett:/config
       - ${BLACKHOLE_PATH}/:/downloads
@@ -65,6 +64,34 @@ services:
       - ${JACKETT_PORT}:9117
     expose:
       - ${JACKETT_PORT}
+    restart: ${RESTART_POLICY}
+    labels:
+      - ${UPDATE_ON}
+
+  ################
+  # TRANSMISSIOM #
+  ################
+  transmission:
+    image: linuxserver/transmission
+    container_name: htpc-transmission
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - USER=${TRANSMISSION_USER}
+      - PASS=${TRANSMISSION_PASS}
+    volumes:
+      - ${CONFIG_PATH}/transmission:/config
+      - ${DOWNLOAD_PATH}/:/downloads
+      - ${BLACKHOLE_PATH}/:/watch
+    ports:
+      - ${TRANSMISSION_PORT}:9091
+      - 51413:51413
+      - 51413:51413/udp
+    expose:
+      - ${TRANSMISSION_PORT}
+      - 51413
+      - 51413/udp
     restart: ${RESTART_POLICY}
     labels:
       - ${UPDATE_ON}
