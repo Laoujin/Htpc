@@ -80,6 +80,7 @@ services:
       - TZ=${TZ}
       - USER=${TRANSMISSION_USER}
       - PASS=${TRANSMISSION_PASS}
+      - TRANSMISSION_RPC_HOST_WHITELIST="127.0.0.1"
     volumes:
       - ${CONFIG_PATH}/transmission:/config
       - ${DOWNLOAD_PATH}/:/downloads
@@ -92,6 +93,8 @@ services:
       - ${TRANSMISSION_PORT}
       - 51413
       - 51413/udp
+    dns:
+      - 1.1.1.1
     restart: ${RESTART_POLICY}
     labels:
       - ${UPDATE_ON}
@@ -123,7 +126,7 @@ services:
   ##############
   youtube:
     image: kmb32123/youtube-dl-server
-    container_name: youtube-dl
+    container_name: htpc-youtube-dl
     volumes:
       - ${YOUTUBE_PATH}/:/youtube-dl
     ports:
