@@ -59,7 +59,7 @@ services:
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${CONFIG_PATH}/radarr:/config
+      - /volume1/Media/config/radarr:/config
       - ${MOVIES_PATH}:/movies
       - ${DOWNLOAD_PATH}:/downloads
     ports:
@@ -176,6 +176,38 @@ services:
 
 
   ########
+  # PLEX #
+  ########
+  plex:
+    image: ghcr.io/linuxserver/plex
+    container_name: htpc-plex
+    network_mode: host
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - VERSION=docker
+      - PLEX_CLAIM= #optional
+    volumes:
+      - ${CONFIG_PATH}/plex:/config
+      - ${SERIES_PATH}:/tv
+      - ${MOVIES_PATH}:/movies
+    restart: ${RESTART_POLICY}
+    ports:
+      - 32400:32400
+      - 32401:80
+  # -p 32400:32400 \
+  # -p 1900:1900/udp \
+  # -p 3005:3005 \
+  # -p 5353:5353/udp \
+  # -p 8324:8324 \
+  # -p 32410:32410/udp \
+  # -p 32412:32412/udp \
+  # -p 32413:32413/udp \
+  # -p 32414:32414/udp \
+  # -p 32469:32469
+
+
+  ########
   # OMBI #
   ########
   ombi:
@@ -264,9 +296,9 @@ services:
       - 'com.centurylinklabs.watchtower.enable=true'
 
 
-  # ==============
-  # = WATCHTOWER =
-  # ==============
+  ##############
+  # WATCHTOWER #
+  ##############
   watchtower:
     image: containrrr/watchtower
     container_name: watchtower
@@ -301,75 +333,31 @@ services:
       # - 'traefik.enable=false'
 
 
-  # Evaluation section :)
-
-  glances:
-    image: nicolargo/glances:latest
-    container_name: glances
-    restart: unless-stopped
-    privileged: true
-    network_mode: host
-    # networks:
-    #   - socket_proxy
-    security_opt:
-      - no-new-privileges:true
-    ports:
-      - "61208:61208"
-    pid: host
+  #############
+  # DUPLICATI #
+  #############
+  duplicati:
+    image: ghcr.io/linuxserver/duplicati
+    container_name: duplicati
+    environment:
+      - PUID=0
+      - PGID=0
+      - TZ=${TZ}
+      # - CLI_ARGS= #optional
     volumes:
-      # - $DOCKERDIR/glances/glances.conf:/glances/conf/glances.conf # Use this if you want to add a glances.conf file
-      - /var/run/docker.sock:/var/run/docker.sock:ro # Use Docker Socket Proxy instead for improved security
-    # environment:
-    #   # GLANCES_OPT: "-C /glances/conf/glances.conf --quiet --export influxdb"
-    #   GLANCES_OPT: "-w"
-    #   DOCKER_HOST: tcp://socket-proxy:2375
-
-  # calibre-web:
-  #   image: ghcr.io/linuxserver/calibre-web
-  #   container_name: calibre-web
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #     - DOCKER_MODS=linuxserver/calibre-web:calibre
-  #   volumes:
-  #     - /volume1/Personal/sync/dropbox/htpc/docker-compose/test/calibre-web:/config
-  #     # - /volume1/Media/Books:/books
-  #   ports:
-  #     - 8083:8083
-  #   restart: unless-stopped
-
-  # too simple for my needs
-  # photoshow:
-  #   image: ghcr.io/linuxserver/photoshow
-  #   container_name: photoshow
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   volumes:
-  #     - /volume1/Personal/sync/dropbox/htpc/docker-compose/test/photoshow:/config
-  #     - /volume1/Personal/sync/dropbox/htpc/docker-compose/test/photoshow-pics:/Pictures:ro
-  #     - /volume1/Personal/sync/dropbox/htpc/docker-compose/test/photoshow-thumbs:/Thumbs
-  #   ports:
-  #     - 8027:80
-  #   restart: unless-stopped
+      - ${CONFIG_PATH}/duplicati:/config
+      - ${BACKUP_PATH}:/backups
+      - ${CONFIG_PATH}:/source
+      - .:/htpc
+      - ${DOCKER_SOCKET}:/var/run/docker.sock
+      - ${DOCKER_BIN}:/usr/bin/docker
+    ports:
+      - ${DUPLICATI_PORT}:8200
+    restart: ${RESTART_POLICY}
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
 
 
-  # for plex :(
-  # overseerr:
-  #   container_name: overseerr
-  #   image: hotio/overseerr
-  #   ports:
-  #     - "5055:5055"
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - UMASK=002
-  #     - TZ=${TZ}
-  #     - ARGS
-  #   volumes:
-  #     - /volume1/Personal/sync/dropbox/htpc/docker-compose/test/overseerr:/config
 
 volumes:
   portainer_data:

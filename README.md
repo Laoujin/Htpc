@@ -3,7 +3,7 @@ Htpc
 
 ```ps1
 cp .env-example .env
-docker-compose -d up
+docker-compose up -d
 docker-compose stop
 ```
 
@@ -20,37 +20,23 @@ https://www.forum-nas.fr/viewtopic.php?f=56&t=14012
 chmod 777 /dev/dri/renderD128 # Perhaps not necessary?
 ```
 
+Or we could transcode inplayable videos:
+jlesage/handbrake or jlesage/mkvtoolnix
+
 ## Inspiration
 
-https://hotio.dev
-
-
-jlesage/handbrake or jlesage/mkvtoolnix
-nicolargo/glances
-jlesage/qdirstat
-amir20/dozzle
-hunterlong/statping
-codercom/code-server
-
+https://github.com/sjlu/popular-movies
 
 YoutubeDL:
 javascript:!function(){fetch("http://pongit:8885/youtube-dl/q",{body:new URLSearchParams({url:window.location.href,format:"bestvideo"}),method:"POST"})}();
-
 
 configuration:
 - config & torrent-blackhole --> in dropbox/working/htpc --> magnets don't work for Transmission blackhole
 - downloads in m:\downloads
 
-### Lists
-
-https://github.com/faulander/P4S
 
 https://github.com/l3uddz/traktarr
-https://github.com/sjlu/popular-movies
 
-
-https://api.radarr.video/v2/imdb/list?listId=ur6239814
-https://www.imdb.com/list/ls085729609/
 
 
 ## Open Source Contributions
