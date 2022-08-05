@@ -46,28 +46,26 @@ services:
     restart: ${RESTART_POLICY}
     labels:
       - ${UPDATE_ON}
-
-  ###########
-  # JACKETT #
-  ###########
-  jackett:
-    image: linuxserver/jackett
-    container_name: htpc-jackett
+############
+# PROWLARR #
+############
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: htpc-prowlarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
     volumes:
-      - ${CONFIG_PATH}/jackett:/config
-      - ${BLACKHOLE_PATH}/:/downloads
+      - ${CONFIG_PATH}/prowlarr:/config
     ports:
-      - ${JACKETT_PORT}:9117
+      - ${PROWLARR_PORT}:9696
     expose:
-      - ${JACKETT_PORT}
+      - ${PROWLARR_PORT}
     restart: ${RESTART_POLICY}
     labels:
       - ${UPDATE_ON}
-
+  
   ################
   # TRANSMISSIOM #
   ################
@@ -80,7 +78,7 @@ services:
       - TZ=${TZ}
       - USER=${TRANSMISSION_USER}
       - PASS=${TRANSMISSION_PASS}
-      - TRANSMISSION_RPC_HOST_WHITELIST="127.0.0.1"
+      - TRANSMISSION_RPC_HOST_WHITELIST="127.0.0.1,192.168.1.200"
     volumes:
       - ${CONFIG_PATH}/transmission:/config
       - ${DOWNLOAD_PATH}/:/downloads

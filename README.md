@@ -52,20 +52,9 @@ docker run -id \
  linuxserver/bazarr
 ```
 
-## Jackett
+## Prowlarr
 
 ```
-docker run -id \
-  --name=htpc-jackett \
-  -e PUID=10XX \
-  -e PGID=10X \
-  -e TZ=Europe/Brussels \
-  -e AUTO_UPDATE=true \
-  -p 9117:9117 \
-  -v /[PATH-TO-CONFIG]:/config \
-  -v /[PATH-TO]/blackhole:/downloads \
-  --restart unless-stopped \
- linuxserver/jackett
 ```
 
 ## Transmission
