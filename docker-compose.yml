@@ -51,45 +51,66 @@ services:
   ##########
   # RADARR #
   ##########
-  radarr:
-    image: linuxserver/radarr
-    container_name: htpc-radarr
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - /volume1/Media/config/radarr:/config
-      - ${MOVIES_PATH}:/movies
-      - ${DOWNLOAD_PATH}:/downloads
-    ports:
-      - ${RADARR_PORT}:7878
-    expose:
-      - ${RADARR_PORT}
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
+  # radarr:
+  #   image: linuxserver/radarr
+  #   container_name: htpc-radarr
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #   volumes:
+  #     - /volume1/Media/config/radarr:/config
+  #     - ${MOVIES_PATH}:/movies
+  #     - ${DOWNLOAD_PATH}:/downloads
+  #   ports:
+  #     - ${RADARR_PORT}:7878
+  #   expose:
+  #     - ${RADARR_PORT}
+  #   restart: ${RESTART_POLICY}
+  #   labels:
+  #     - 'com.centurylinklabs.watchtower.enable=true'
 
 
   ###########
   # JACKETT #
   ###########
-  jackett:
-    image: linuxserver/jackett
-    container_name: htpc-jackett
+  # jackett:
+  #   image: linuxserver/jackett
+  #   container_name: htpc-jackett
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #     # - AUTO_UPDATE=true
+  #   volumes:
+  #     - ${CONFIG_PATH}/jackett:/config
+  #     - ${BLACKHOLE_PATH}:/downloads
+  #   ports:
+  #     - ${JACKETT_PORT}:9117
+  #   expose:
+  #     - ${JACKETT_PORT}
+  #   restart: ${RESTART_POLICY}
+  #   labels:
+  #     - 'com.centurylinklabs.watchtower.enable=true'
+
+
+  ############
+  # PROWLARR #
+  ############
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:develop
+    container_name: htpc-prowlarr
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      # - AUTO_UPDATE=true
     volumes:
-      - ${CONFIG_PATH}/jackett:/config
-      - ${BLACKHOLE_PATH}:/downloads
+      - ${CONFIG_PATH}/prowlarr:/config
     ports:
-      - ${JACKETT_PORT}:9117
+      - ${PROWLARR_PORT}:9696
     expose:
-      - ${JACKETT_PORT}
-    restart: ${RESTART_POLICY}
+      - ${PROWLARR_PORT}
+    restart: unless-stopped
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
 
