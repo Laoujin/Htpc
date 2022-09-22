@@ -70,30 +70,6 @@ services:
   #   labels:
   #     - 'com.centurylinklabs.watchtower.enable=true'
 
-
-  ###########
-  # JACKETT #
-  ###########
-  # jackett:
-  #   image: linuxserver/jackett
-  #   container_name: htpc-jackett
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #     # - AUTO_UPDATE=true
-  #   volumes:
-  #     - ${CONFIG_PATH}/jackett:/config
-  #     - ${BLACKHOLE_PATH}:/downloads
-  #   ports:
-  #     - ${JACKETT_PORT}:9117
-  #   expose:
-  #     - ${JACKETT_PORT}
-  #   restart: ${RESTART_POLICY}
-  #   labels:
-  #     - 'com.centurylinklabs.watchtower.enable=true'
-
-
   ############
   # PROWLARR #
   ############
