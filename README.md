@@ -22,11 +22,12 @@ docker-compose up -d
 docker-compose stop
 ```
 
-### Save/Load 
+### Save/Load
 
-In case the internet connection is too slow, ask for an USB stick with the Docker images.
+In case the internet connection is too slow, ask for an USB stick with the Docker images.  
+Also see `images-load.ps1` and `images-save.ps1`.
 
-```
+```ps1
 docker save -o heimedall.tar linuxserver/heimdall
 docker load -i "heimdall.tar"
 ```
