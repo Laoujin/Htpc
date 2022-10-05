@@ -1,6 +1,14 @@
 Htpc
 ====
 
+
+Startup with a dummy Heimdall:
+
+```ps1
+git checkout heimdall-windows
+```
+
+
 ## Getting Started
 
 ```ps1
