@@ -51,24 +51,25 @@ services:
   ##########
   # RADARR #
   ##########
-  # radarr:
-  #   image: linuxserver/radarr
-  #   container_name: htpc-radarr
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - TZ=${TZ}
-  #   volumes:
-  #     - /volume1/Media/config/radarr:/config
-  #     - ${MOVIES_PATH}:/movies
-  #     - ${DOWNLOAD_PATH}:/downloads
-  #   ports:
-  #     - ${RADARR_PORT}:7878
-  #   expose:
-  #     - ${RADARR_PORT}
-  #   restart: ${RESTART_POLICY}
-  #   labels:
-  #     - 'com.centurylinklabs.watchtower.enable=true'
+  radarr:
+    image: linuxserver/radarr
+    container_name: htpc-radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ${CONFIG_PATH}/radarr:/config
+      - ${MOVIES_PATH}:/movies
+      - ${DOWNLOAD_PATH}:/downloads
+    ports:
+      - ${RADARR_PORT}:7878
+    expose:
+      - ${RADARR_PORT}
+    restart: ${RESTART_POLICY}
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
 
   ############
   # PROWLARR #
@@ -165,8 +166,8 @@ services:
     expose:
       - ${JELLYFIN_PORT}
       - ${JELLYFIN_PORT_SSH}
-    devices:
-      - /dev/dri:/dev/dri
+    # devices:
+    #   - /dev/dri:/dev/dri
     restart: ${RESTART_POLICY}
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
@@ -175,23 +176,23 @@ services:
   ########
   # PLEX #
   ########
-  plex:
-    image: ghcr.io/linuxserver/plex
-    container_name: htpc-plex
-    network_mode: host
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - VERSION=docker
-      - PLEX_CLAIM= #optional
-    volumes:
-      - ${CONFIG_PATH}/plex:/config
-      - ${SERIES_PATH}:/tv
-      - ${MOVIES_PATH}:/movies
-    restart: ${RESTART_POLICY}
-    ports:
-      - 32400:32400
-      - 32401:80
+  # plex:
+  #   image: ghcr.io/linuxserver/plex
+  #   container_name: htpc-plex
+  #   network_mode: host
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - VERSION=docker
+  #     - PLEX_CLAIM= #optional
+  #   volumes:
+  #     - ${CONFIG_PATH}/plex:/config
+  #     - ${SERIES_PATH}:/tv
+  #     - ${MOVIES_PATH}:/movies
+  #   restart: ${RESTART_POLICY}
+  #   ports:
+  #     - 32400:32400
+  #     - 32401:80
   # -p 32400:32400 \
   # -p 1900:1900/udp \
   # -p 3005:3005 \
@@ -253,7 +254,7 @@ services:
   # READARR #
   ###########
   readarr:
-    container_name: readarr
+    container_name: htpc-readarr
     image: hotio/readarr:nightly
     restart: ${RESTART_POLICY}
     ports:
@@ -337,8 +338,8 @@ services:
     image: ghcr.io/linuxserver/duplicati
     container_name: duplicati
     environment:
-      - PUID=0
-      - PGID=0
+      - PUID=${PUID}
+      - PGID=${PGID}
       - TZ=${TZ}
       # - CLI_ARGS= #optional
     volumes:

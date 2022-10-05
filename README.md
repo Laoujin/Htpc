@@ -1,16 +1,35 @@
 Htpc
 ====
 
+## Getting Started
+
 ```ps1
-cp .env-example .env
+# Create some init files
+./setup.ps1
+
+# Configure .env & docker-compose-yml
+
+# Start & Stop
 docker-compose up -d
 docker-compose stop
+```
+
+### Save/Load 
+
+In case the internet connection is too slow, ask for an USB stick with the Docker images.
+
+```
+docker save -o heimedall.tar linuxserver/heimdall
+docker load -i "heimdall.tar"
 ```
 
 ## Documentation
 
 - [Servarr Wiki](https://wiki.servarr.com)
 - [Trash Guides](https://trash-guides.info)
+- [LinuxServer Fleet](https://fleet.linuxserver.io)
+- [SmartHome Beginner](https://www.smarthomebeginner.com)
+- [File Quality](https://trash-guides.info/Radarr/Radarr-Quality-Settings-File-Size/)
 
 ## Hardware Acceleration
 
@@ -25,13 +44,8 @@ jlesage/handbrake or jlesage/mkvtoolnix
 
 ## Inspiration
 
-https://github.com/sjlu/popular-movies
-
 YoutubeDL:
 javascript:!function(){fetch("http://pongit:8885/youtube-dl/q",{body:new URLSearchParams({url:window.location.href,format:"bestvideo"}),method:"POST"})}();
-
-https://github.com/l3uddz/traktarr
-
 
 
 ## Open Source Contributions
