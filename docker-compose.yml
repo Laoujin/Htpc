@@ -216,7 +216,7 @@ services:
     # mac_address: 00:00:00:41:16:01
     # networks:
     #   - htpc-public
-    network_mode: host
+    # network_mode: host
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
