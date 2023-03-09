@@ -201,7 +201,6 @@ services:
   # plex:
   #   image: ghcr.io/linuxserver/plex
   #   container_name: htpc-plex
-  #   network_mode: host
   #   environment:
   #     - PUID=${PUID}
   #     - PGID=${PGID}
@@ -233,12 +232,6 @@ services:
   ombi:
     image: linuxserver/ombi
     container_name: htpc-ombi
-    # hostname: ombi
-    # domainname: ombi.htpc
-    # mac_address: 00:00:00:41:16:01
-    # networks:
-    #   - htpc-public
-    # network_mode: host
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
