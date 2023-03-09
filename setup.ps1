@@ -18,16 +18,10 @@ $dir = mkdir config/prowlarr -ErrorAction SilentlyContinue
 $dir = mkdir config/transmission -ErrorAction SilentlyContinue
 $dir = mkdir config/bazarr -ErrorAction SilentlyContinue
 $dir = mkdir config/jellyfin -ErrorAction SilentlyContinue
-$dir = mkdir config/plex -ErrorAction SilentlyContinue
 $dir = mkdir config/ombi -ErrorAction SilentlyContinue
 $dir = mkdir config/readarr -ErrorAction SilentlyContinue
-$dir = mkdir config/portainer -ErrorAction SilentlyContinue
 $dir = mkdir config/watchtower -ErrorAction SilentlyContinue
-$dir = mkdir config/duplicati -ErrorAction SilentlyContinue
 
-$dir = mkdir config/homarr -ErrorAction SilentlyContinue
-$dir = mkdir config/homarr/configs -ErrorAction SilentlyContinue
-$dir = mkdir config/homarr/icons -ErrorAction SilentlyContinue
 
 $dir = mkdir htpc -ErrorAction SilentlyContinue
 $dir = mkdir htpc/downloads -ErrorAction SilentlyContinue

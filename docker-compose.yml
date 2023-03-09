@@ -1,4 +1,4 @@
-version: "2.1"
+version: "3"
 
 services:
   ############
@@ -19,28 +19,6 @@ services:
     expose:
       - ${HEIMDALL_PORT}
       - ${HEIMDALL_PORT_SSH}
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
-
-  ##########
-  # HOMARR #
-  ##########
-  # Typically you want to use either Heimdall OR Homarr
-  homarr:
-    image: ghcr.io/ajnart/homarr:latest
-    container_name: htpc-homarr
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ${CONFIG_PATH}/homarr/configs:/app/data/configs
-      - ${CONFIG_PATH}/homarr/icons:/app/public/icons
-      - ${DOCKER_SOCKET}:/var/run/docker.sock
-    ports:
-      - ${HOMARR_PORT}:7575
-    expose:
-      - ${HOMARR_PORT}
     restart: ${RESTART_POLICY}
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
@@ -188,42 +166,9 @@ services:
     expose:
       - ${JELLYFIN_PORT}
       - ${JELLYFIN_PORT_SSH}
-    # devices:
-    #   - /dev/dri:/dev/dri
     restart: ${RESTART_POLICY}
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
-
-
-  ########
-  # PLEX #
-  ########
-  # plex:
-  #   image: ghcr.io/linuxserver/plex
-  #   container_name: htpc-plex
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - VERSION=docker
-  #     - PLEX_CLAIM= #optional
-  #   volumes:
-  #     - ${CONFIG_PATH}/plex:/config
-  #     - ${SERIES_PATH}:/tv
-  #     - ${MOVIES_PATH}:/movies
-  #   restart: ${RESTART_POLICY}
-  #   ports:
-  #     - 32400:32400
-  #     - 32401:80
-  # -p 32400:32400 \
-  # -p 1900:1900/udp \
-  # -p 3005:3005 \
-  # -p 5353:5353/udp \
-  # -p 8324:8324 \
-  # -p 32410:32410/udp \
-  # -p 32412:32412/udp \
-  # -p 32413:32413/udp \
-  # -p 32414:32414/udp \
-  # -p 32469:32469
 
 
   ########
@@ -236,7 +181,6 @@ services:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      # - BASE_URL=/ombi
     volumes:
       - ${CONFIG_PATH}/ombi:/config
     ports:
@@ -289,88 +233,38 @@ services:
       - 'com.centurylinklabs.watchtower.enable=true'
 
 
-  #############
-  # PORTAINER #
-  #############
-  portainer:
-    image: portainer/portainer-ce
-    container_name: portainer
-    volumes:
-      - ${DOCKER_SOCKET}:/var/run/docker.sock
-      - portainer_data:/data
-    ports:
-      - ${PORTAINER_PORT_UI}:9000
-      - ${PORTAINER_PORT_SSH}:8000
-    expose:
-      - ${PORTAINER_PORT_UI}
-      - ${PORTAINER_PORT_SSH}
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
-
-  ##############
-  # WATCHTOWER #
-  ##############
-  watchtower:
-    image: containrrr/watchtower
-    container_name: watchtower
-    restart: ${RESTART_POLICY}
-    logging:
-      driver: 'json-file'
-      options:
-        max-file: '5'
-        max-size: '10m'
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_LABEL_ENABLE=${WATCHTOWER_LABEL_UPDATE}
-      - 'WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE}'
-      - WATCHTOWER_DEBUG=true
-      - WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATION}
-      - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=${WATCHTOWER_SLACK}
-      - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=Watchtower
-      - WATCHTOWER_NOTIFICATION_EMAIL_FROM=${SMTP_FROM}
-      - WATCHTOWER_NOTIFICATION_EMAIL_TO=${WATCHTOWER_EMAIL}
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=${SMTP_SERVER}
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=${SMTP_PORT}
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=${SMTP_USER}
-      - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${SMTP_PASS}
-    volumes:
-      - ${DOCKER_SOCKET}:/var/run/docker.sock
-      - /etc/ssl/certs:/etc/ssl/certs
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-      # - 'traefik.enable=false'
-
-
-  #############
-  # DUPLICATI #
-  #############
-  duplicati:
-    image: ghcr.io/linuxserver/duplicati
-    container_name: duplicati
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      # - CLI_ARGS= #optional
-    volumes:
-      - ${CONFIG_PATH}/duplicati:/config
-      - ${BACKUP_PATH}:/backups
-      - ${CONFIG_PATH}:/source
-      - .:/htpc
-      - ${DOCKER_SOCKET}:/var/run/docker.sock
-      - ${DOCKER_BIN}:/usr/bin/docker
-    ports:
-      - ${DUPLICATI_PORT}:8200
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
-
-
-volumes:
-  portainer_data:
+  # ##############
+  # # WATCHTOWER #
+  # ##############
+  # watchtower:
+  #   image: containrrr/watchtower
+  #   container_name: watchtower
+  #   restart: ${RESTART_POLICY}
+  #   logging:
+  #     driver: 'json-file'
+  #     options:
+  #       max-file: '5'
+  #       max-size: '10m'
+  #   environment:
+  #     - PUID=${PUID}
+  #     - PGID=${PGID}
+  #     - TZ=${TZ}
+  #     - WATCHTOWER_CLEANUP=true
+  #     - WATCHTOWER_LABEL_ENABLE=${WATCHTOWER_LABEL_UPDATE}
+  #     - 'WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE}'
+  #     - WATCHTOWER_DEBUG=true
+  #     - WATCHTOWER_NOTIFICATIONS=${WATCHTOWER_NOTIFICATION}
+  #     - WATCHTOWER_NOTIFICATION_SLACK_HOOK_URL=${WATCHTOWER_SLACK}
+  #     - WATCHTOWER_NOTIFICATION_SLACK_IDENTIFIER=Watchtower
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_FROM=${SMTP_FROM}
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_TO=${WATCHTOWER_EMAIL}
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER=${SMTP_SERVER}
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PORT=${SMTP_PORT}
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_USER=${SMTP_USER}
+  #     - WATCHTOWER_NOTIFICATION_EMAIL_SERVER_PASSWORD=${SMTP_PASS}
+  #   volumes:
+  #     - source: '/var/run/docker.sock'
+  #       target: '\\.\pipe\docker_engine'
+  #       type: npipe
+  #   labels:
+  #     - 'com.centurylinklabs.watchtower.enable=true'

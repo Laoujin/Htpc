@@ -8,6 +8,4 @@ docker save -o images\jellyfin.tar linuxserver/jellyfin
 docker save -o images\ombi.tar linuxserver/ombi
 docker save -o images\youtube-dl-server.tar kmb32123/youtube-dl-server
 docker save -o images\readarr.tar hotio/readarr:nightly
-docker save -o images\portainer-ce.tar portainer/portainer-ce
 docker save -o images\watchtower.tar containrrr/watchtower
-docker save -o images\duplicati.tar ghcr.io/linuxserver/duplicati
