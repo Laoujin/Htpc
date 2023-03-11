@@ -24,27 +24,6 @@ services:
       - 'com.centurylinklabs.watchtower.enable=true'
 
 
-  ##########
-  # HOMARR #
-  ##########
-  # Typically you want to use either Heimdall OR Homarr
-  homarr:
-    image: ghcr.io/ajnart/homarr:latest
-    container_name: htpc-homarr
-    environment:
-      - TZ=${TZ}
-    volumes:
-      - ${CONFIG_PATH}/homarr/configs:/app/data/configs
-      - ${CONFIG_PATH}/homarr/icons:/app/public/icons
-      - ${DOCKER_SOCKET}:/var/run/docker.sock
-    ports:
-      - ${HOMARR_PORT}:7575
-    expose:
-      - ${HOMARR_PORT}
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
 
   ##########
   # SONARR #
@@ -194,37 +173,6 @@ services:
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
 
-
-  ########
-  # PLEX #
-  ########
-  # plex:
-  #   image: ghcr.io/linuxserver/plex
-  #   container_name: htpc-plex
-  #   network_mode: host
-  #   environment:
-  #     - PUID=${PUID}
-  #     - PGID=${PGID}
-  #     - VERSION=docker
-  #     - PLEX_CLAIM= #optional
-  #   volumes:
-  #     - ${CONFIG_PATH}/plex:/config
-  #     - ${SERIES_PATH}:/tv
-  #     - ${MOVIES_PATH}:/movies
-  #   restart: ${RESTART_POLICY}
-  #   ports:
-  #     - 32400:32400
-  #     - 32401:80
-  # -p 32400:32400 \
-  # -p 1900:1900/udp \
-  # -p 3005:3005 \
-  # -p 5353:5353/udp \
-  # -p 8324:8324 \
-  # -p 32410:32410/udp \
-  # -p 32412:32412/udp \
-  # -p 32413:32413/udp \
-  # -p 32414:32414/udp \
-  # -p 32469:32469
 
 
   ########
