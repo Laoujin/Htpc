@@ -87,7 +87,7 @@ services:
       - ${PROWLARR_PORT}:9696
     expose:
       - ${PROWLARR_PORT}
-    restart: unless-stopped
+    restart: ${RESTART_POLICY}
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
 
@@ -233,6 +233,8 @@ services:
       - 'com.centurylinklabs.watchtower.enable=true'
 
 
+  # Watchtower doesn't work on Windows out of the box
+  # See README
   # ##############
   # # WATCHTOWER #
   # ##############
