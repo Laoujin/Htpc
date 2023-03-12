@@ -167,8 +167,6 @@ services:
     expose:
       - ${JELLYFIN_PORT}
       - ${JELLYFIN_PORT_SSH}
-    # devices:
-    #   - /dev/dri:/dev/dri
     restart: ${RESTART_POLICY}
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
@@ -181,17 +179,10 @@ services:
   ombi:
     image: linuxserver/ombi
     container_name: htpc-ombi
-    # hostname: ombi
-    # domainname: ombi.htpc
-    # mac_address: 00:00:00:41:16:01
-    # networks:
-    #   - htpc-public
-    # network_mode: host
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      # - BASE_URL=/ombi
     volumes:
       - ${CONFIG_PATH}/ombi:/config
     ports:
@@ -243,27 +234,6 @@ services:
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
 
-
-  #############
-  # PORTAINER #
-  #############
-  portainer:
-    image: portainer/portainer-ce
-    container_name: portainer
-    volumes:
-      - ${DOCKER_SOCKET}:/var/run/docker.sock
-      - portainer_data:/data
-    ports:
-      - ${PORTAINER_PORT_UI}:9000
-      - ${PORTAINER_PORT_SSH}:8000
-    expose:
-      - ${PORTAINER_PORT_UI}
-      - ${PORTAINER_PORT_SSH}
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
-
   ##############
   # WATCHTOWER #
   ##############
@@ -298,34 +268,3 @@ services:
       - /etc/ssl/certs:/etc/ssl/certs
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
-      # - 'traefik.enable=false'
-
-
-  #############
-  # DUPLICATI #
-  #############
-  duplicati:
-    image: ghcr.io/linuxserver/duplicati
-    container_name: duplicati
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      # - CLI_ARGS= #optional
-    volumes:
-      - ${CONFIG_PATH}/duplicati:/config
-      - ${BACKUP_PATH}:/backups
-      - ${CONFIG_PATH}:/source
-      - .:/htpc
-      - ${DOCKER_SOCKET}:/var/run/docker.sock
-      - ${DOCKER_BIN}:/usr/bin/docker
-    ports:
-      - ${DUPLICATI_PORT}:8200
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
-
-
-volumes:
-  portainer_data:
