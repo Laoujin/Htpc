@@ -38,8 +38,7 @@ services:
     volumes:
       - ${CONFIG_PATH}/sonarr:/config
       - ${CONFIG_PATH}/sonarr-rtc:/dev/rtc:ro
-      - ${SERIES_PATH}:/tv
-      - ${DOWNLOAD_PATH}:/downloads
+      - ${DATA_PATH}:/data
     ports:
       - ${SONARR_PORT}:8989
     expose:
@@ -61,8 +60,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/radarr:/config
-      - ${MOVIES_PATH}:/movies
-      - ${DOWNLOAD_PATH}:/downloads
+      - ${DATA_PATH}:/data
     ports:
       - ${RADARR_PORT}:7878
     expose:
@@ -108,8 +106,8 @@ services:
       - PASS=${TRANSMISSION_PASS}
     volumes:
       - ${CONFIG_PATH}/transmission:/config
-      - ${DOWNLOAD_PATH}:/downloads
-      - ${BLACKHOLE_PATH}:/watch
+      - ${DATA_PATH}:/data
+      - ${DATA_PATH}/${BLACKHOLE_PATH}:/watch
     ports:
       - ${TRANSMISSION_PORT}:9091
       - 51413:51413
@@ -135,8 +133,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/bazarr:/config
-      - ${SERIES_PATH}:/tv
-      - ${MOVIES_PATH}:/movies
+      - ${DATA_PATH}:/data
     ports:
       - ${BAZARR_PORT}:6767
     expose:
@@ -158,9 +155,7 @@ services:
       - TZ=${TZ}
     volumes:
       - ${CONFIG_PATH}/jellyfin:/config
-      - ${SERIES_PATH}:/data/tvshows
-      - ${MOVIES_PATH}:/data/movies
-      - ${YOUTUBE_PATH}:/data/youtube
+      - ${DATA_PATH}:/data
     ports:
       - ${JELLYFIN_PORT}:8096
       - ${JELLYFIN_PORT_SSH}:8090
@@ -201,7 +196,7 @@ services:
     image: kmb32123/youtube-dl-server
     container_name: youtube-dl
     volumes:
-      - ${YOUTUBE_PATH}:/youtube-dl
+      - ${DATA_PATH}/youtube:/youtube-dl
     ports:
       - ${YOUTUBE_PORT}:8080
     expose:
@@ -230,7 +225,7 @@ services:
       - ARGS
     volumes:
       - ${CONFIG_PATH}/readarr:/config
-      - ${BOOKS_PATH}:/books
+      - ${DATA_PATH}/books:/books
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
 
