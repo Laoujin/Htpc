@@ -97,7 +97,7 @@ services:
   # TRANSMISSION #
   ################
   transmission:
-    image: linuxserver/transmission
+    image: linuxserver/transmission:version-3.00-r8
     container_name: htpc-transmission
     environment:
       - PUID=${PUID}
