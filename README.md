@@ -7,6 +7,10 @@ Htpc
 ./setup.sh
 ```
 
+## Bazarr Subtitles
+
+Check [the stats](https://wiki.bazarr.media/bazarr-stats/) for which providers to add.
+
 
 ## Windows Installation
 
