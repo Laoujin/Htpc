@@ -164,6 +164,133 @@ services:
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
 
+  ###############
+  # QBITTORRENT #
+  ###############
+  # Torrent client (evaluating vs Transmission). Same /data root → hardlinks kept.
+  # https://github.com/qbittorrent/qBittorrent
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: htpc-qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=${QBITTORRENT_PORT}
+    volumes:
+      - ${CONFIG_PATH}/qbittorrent:/config
+      - ${DATA_PATH}:/data
+    ports:
+      - ${QBITTORRENT_PORT}:${QBITTORRENT_PORT}
+      - 6881:6881
+      - 6881:6881/udp
+    expose:
+      - ${QBITTORRENT_PORT}
+    restart: ${RESTART_POLICY}
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
+
+  ################
+  # FLARESOLVERR #
+  ################
+  # Solves Cloudflare challenges for Prowlarr indexers (proxy: http://flaresolverr:8191).
+  # https://github.com/FlareSolverr/FlareSolverr
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: htpc-flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=${TZ}
+    ports:
+      - ${FLARESOLVERR_PORT}:8191
+    expose:
+      - ${FLARESOLVERR_PORT}
+    restart: ${RESTART_POLICY}
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
+
+  ##############
+  # JELLYSEERR #
+  ##############
+  # Requests (evaluating vs Ombi). In setup, point it at the Jellyfin LXC: http://10.0.20.8:8096
+  # https://github.com/fallenbagel/jellyseerr
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: htpc-jellyseerr
+    environment:
+      - TZ=${TZ}
+      - LOG_LEVEL=info
+    volumes:
+      - ${CONFIG_PATH}/jellyseerr:/app/config
+    ports:
+      - ${JELLYSEERR_PORT}:5055
+    expose:
+      - ${JELLYSEERR_PORT}
+    restart: ${RESTART_POLICY}
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
+
+  #############
+  # JELLYSTAT #
+  #############
+  # Jellyfin watch analytics (+ its own Postgres). Point at the LXC: http://10.0.20.8:8096
+  # https://github.com/CyferShepard/Jellystat
+  jellystat-db:
+    image: postgres:16
+    container_name: htpc-jellystat-db
+    environment:
+      - POSTGRES_USER=${JELLYSTAT_DB_USER}
+      - POSTGRES_PASSWORD=${JELLYSTAT_DB_PASSWORD}
+    volumes:
+      - ${CONFIG_PATH}/jellystat-db:/var/lib/postgresql/data
+    restart: ${RESTART_POLICY}
+
+  jellystat:
+    image: cyfershepard/jellystat:latest
+    container_name: htpc-jellystat
+    environment:
+      - TZ=${TZ}
+      - POSTGRES_USER=${JELLYSTAT_DB_USER}
+      - POSTGRES_PASSWORD=${JELLYSTAT_DB_PASSWORD}
+      - POSTGRES_IP=jellystat-db
+      - POSTGRES_PORT=5432
+      - JWT_SECRET=${JELLYSTAT_JWT_SECRET}
+    volumes:
+      - ${CONFIG_PATH}/jellystat/backup:/app/backend/backup-data
+    ports:
+      - ${JELLYSTAT_PORT}:3000
+    expose:
+      - ${JELLYSTAT_PORT}
+    depends_on:
+      - jellystat-db
+    restart: ${RESTART_POLICY}
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
+
+  #############
+  # RECYCLARR #
+  #############
+  # Syncs TRaSH-guides quality profiles/custom formats into Sonarr/Radarr.
+  # Config: ${CONFIG_PATH}/recyclarr/recyclarr.yml (sonarr/radarr URLs + API keys).
+  # https://github.com/recyclarr/recyclarr
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:latest
+    container_name: htpc-recyclarr
+    user: ${PUID}:${PGID}
+    environment:
+      - TZ=${TZ}
+      - CRON_SCHEDULE=${RECYCLARR_CRON}
+    volumes:
+      - ${CONFIG_PATH}/recyclarr:/config
+    restart: ${RESTART_POLICY}
+    labels:
+      - 'com.centurylinklabs.watchtower.enable=true'
+
+
   ##############
   # WATCHTOWER #
   ##############
