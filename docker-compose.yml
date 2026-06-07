@@ -162,23 +162,6 @@ services:
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
 
-
-  ##############
-  # YOUTUBE-DL #
-  ##############
-  youtube:
-    image: kmb32123/youtube-dl-server
-    container_name: youtube-dl
-    volumes:
-      - ${DATA_PATH}/youtube:/youtube-dl
-    ports:
-      - ${YOUTUBE_PORT}:8080
-    expose:
-      - ${YOUTUBE_PORT}
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
   ##############
   # WATCHTOWER #
   ##############
