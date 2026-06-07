@@ -95,13 +95,15 @@ services:
   # TRANSMISSION #
   ################
   transmission:
-    image: linuxserver/transmission:version-3.00-r8
+    image: linuxserver/transmission:latest
     container_name: htpc-transmission
     environment:
       - PUID=${PUID}
       - PGID=${PGID}
       - TZ=${TZ}
-      - TRANSMISSION_WEB_HOME=/transmission-web-control/
+      # v3.00-r8 was the last image bundling the web-control UI; newer images
+      # drop bundled UIs, so inject it via the mod (it sets TRANSMISSION_WEB_HOME).
+      - DOCKER_MODS=linuxserver/mods:transmission-transmission-web-control
       - USER=${TRANSMISSION_USER}
       - PASS=${TRANSMISSION_PASS}
     volumes:
