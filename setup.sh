@@ -14,7 +14,6 @@ mkdir $configPath/sonarr -v
 mkdir $configPath/sonarr-rtc -v
 mkdir $configPath/radarr -v
 mkdir $configPath/prowlarr -v
-mkdir $configPath/transmission -v
 mkdir $configPath/qbittorrent -v
 mkdir $configPath/bazarr -v
 mkdir $configPath/ombi -v
@@ -44,9 +43,6 @@ sed -i "s|^JELLYSTAT_DB_PASSWORD=.*$|JELLYSTAT_DB_PASSWORD=$(openssl rand -hex 2
 
 echo ""
 echo "You may want to look at further configuring .env"
-echo "Some containers overlap — pick one and remove the other from docker-compose.yml:"
-echo "  download client : qBittorrent  (or Transmission)"
-echo "  requests        : Jellyseerr   (or Ombi)"
 echo "If there are containers you don't want, remove them from docker-compose.yml"
 echo ""
 echo "And then:"

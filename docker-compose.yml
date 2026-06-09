@@ -91,38 +91,6 @@ services:
       - 'com.centurylinklabs.watchtower.enable=true'
 
 
-  ################
-  # TRANSMISSION #
-  ################
-  transmission:
-    image: linuxserver/transmission:latest
-    container_name: htpc-transmission
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-      # v3.00-r8 was the last image bundling the web-control UI; newer images
-      # drop bundled UIs, so inject it via the mod (it sets TRANSMISSION_WEB_HOME).
-      - DOCKER_MODS=linuxserver/mods:transmission-transmission-web-control
-      - USER=${TRANSMISSION_USER}
-      - PASS=${TRANSMISSION_PASS}
-    volumes:
-      - ${CONFIG_PATH}/transmission:/config
-      - ${DATA_PATH}:/data
-      - ${DATA_PATH}/${BLACKHOLE_PATH}:/watch
-    ports:
-      - ${TRANSMISSION_PORT}:9091
-      - 51413:51413
-      - 51413:51413/udp
-    expose:
-      - ${TRANSMISSION_PORT}
-      - 51413
-      - 51413/udp
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
-
   ##########
   # BAZARR #
   ##########
@@ -167,7 +135,7 @@ services:
   ###############
   # QBITTORRENT #
   ###############
-  # Torrent client (evaluating vs Transmission). Same /data root → hardlinks kept.
+  # Torrent client. Same /data root → hardlinks kept.
   # https://github.com/qbittorrent/qBittorrent
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
