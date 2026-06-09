@@ -112,26 +112,6 @@ services:
     labels:
       - 'com.centurylinklabs.watchtower.enable=true'
 
-  ########
-  # OMBI #
-  ########
-  ombi:
-    image: linuxserver/ombi
-    container_name: htpc-ombi
-    environment:
-      - PUID=${PUID}
-      - PGID=${PGID}
-      - TZ=${TZ}
-    volumes:
-      - ${CONFIG_PATH}/ombi:/config
-    ports:
-      - ${OMBI_PORT}:3579
-    expose:
-      - ${OMBI_PORT}
-    restart: ${RESTART_POLICY}
-    labels:
-      - 'com.centurylinklabs.watchtower.enable=true'
-
   ###############
   # QBITTORRENT #
   ###############
@@ -182,7 +162,7 @@ services:
   ##############
   # JELLYSEERR #
   ##############
-  # Requests (evaluating vs Ombi). In setup, point it at the Jellyfin LXC: http://10.0.20.8:8096
+  # Requests. In setup, point it at the Jellyfin LXC: http://10.0.20.8:8096
   # https://github.com/fallenbagel/jellyseerr
   jellyseerr:
     image: fallenbagel/jellyseerr:latest

@@ -16,7 +16,6 @@ mkdir $configPath/radarr -v
 mkdir $configPath/prowlarr -v
 mkdir $configPath/qbittorrent -v
 mkdir $configPath/bazarr -v
-mkdir $configPath/ombi -v
 mkdir $configPath/jellyseerr -v
 mkdir $configPath/jellystat-db -v
 mkdir -p $configPath/jellystat/backup -v
